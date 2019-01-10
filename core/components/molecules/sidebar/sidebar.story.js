@@ -6,8 +6,7 @@ import { Sidebar } from '@auth0/cosmos'
 storiesOf('Sidebar', module).add('default', () => (
   <Example title="default">
     <Sidebar>
-      <Sidebar.Group>
-        <Sidebar.GroupHeader>Something</Sidebar.GroupHeader>
+      <Sidebar.Group title="Something">
         <Sidebar.Link icon="arrow-right" label="Getting started" url="#/welcome" />
         <Sidebar.Link
           icon="dashboard"
@@ -18,8 +17,7 @@ storiesOf('Sidebar', module).add('default', () => (
         />
         {/* test a long string of text  test a long string of text  test a long string of text  test a long string of text  test a long string of text  test a long string of text  test a long string of text */}
       </Sidebar.Group>
-      <Sidebar.Group>
-        <Sidebar.GroupHeader>Something</Sidebar.GroupHeader>
+      <Sidebar.Group title="Something">
         <Sidebar.Link icon="clients" label="Applications" url="#/applications" />
         <Sidebar.Link icon="apis" label="APIs" url="#/apis" new />
         <Sidebar.Link icon="sso-integrations" label="SSO Integrations" url="#/sso-integrations" />
