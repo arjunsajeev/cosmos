@@ -1,36 +1,103 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Example, Stack } from '@auth0/cosmos/_helpers/story-helpers'
+import { Example } from '@auth0/cosmos/_helpers/story-helpers'
 
-import { List, Switch } from '@auth0/cosmos'
+import { List, Switch, StackLayout, Button } from '@auth0/cosmos'
+
+class ExampleList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { listDrawers: { uno: false, dos: false } }
+  }
+
+  toggleList(listId) {
+    this.setState({
+      listDrawers: { ...this.state.listDrawers, [listId]: !this.state.listDrawers[listId] }
+    })
+  }
+
+  render() {
+    return (
+      <List label="Short List" sortable>
+        <List.Item>
+          <List.Header>Header</List.Header>
+          <List.Body>Body</List.Body>
+          <List.Footer>Action</List.Footer>
+          <List.Drawer
+            open={this.state.listDrawers.uno}
+            onToggle={() => this.toggleList('uno')}
+            description="desciption of the drawer"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            temporellentesque. Risus ultricies tristique nulla aliquet enim. Proin libero nunc
+            consequat interdum varius sit amet. Scelerisque viverra mauris in aliquam sem fringilla
+            ut morbi tincidunt. Tincidunt arcu nonLorem ipsum dolor sit amet, consectetur adipiscing
+            elit, sed do eiusmod temporellentesque. Risus ultricies tristique nulla aliquet enim.
+            Proin libero nunc consequat interdum varius sit amet. Scelerisque viverra mauris in
+            aliquam sem fringilla ut morbi tincidunt. Tincidunt arcu nonLorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod temporellentesque. Risus ultricies tristique
+            nulla aliquet enim. Proin libero nunc consequat interdum varius sit amet. Scelerisque
+            viverra mauris in aliquam sem fringilla ut morbi tincidunt. Tincidunt arcu non
+          </List.Drawer>
+        </List.Item>
+        <List.Item>
+          <List.Header>Header</List.Header>
+          <List.Body>Body</List.Body>
+          <List.Footer>Action</List.Footer>
+          <List.Drawer
+            open={this.state.listDrawers.dos}
+            onToggle={() => this.toggleList('dos')}
+            description="desciption of the drawer"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            temporellentesque. Risus ultricies tristique nulla aliquet enim. Proin libero nunc
+            consequat interdum varius sit amet. Scelerisque viverra mauris in aliquam sem fringilla
+            ut morbi tincidunt. Tincidunt arcu nonLorem ipsum dolor sit amet, consectetur adipiscing
+            elit, sed do eiusmod temporellentesque. Risus ultricies tristique nulla aliquet enim.
+            Proin libero nunc consequat interdum varius sit amet. Scelerisque viverra mauris in
+            aliquam sem fringilla ut morbi tincidunt. Tincidunt arcu nonLorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod temporellentesque. Risus ultricies tristique
+            nulla aliquet enim. Proin libero nunc consequat interdum varius sit amet. Scelerisque
+            viverra mauris in aliquam sem fringilla ut morbi tincidunt. Tincidunt arcu non
+          </List.Drawer>
+        </List.Item>
+      </List>
+    )
+  }
+}
 
 storiesOf('List', module).add('default', () => (
   <Example title="default">
-    <List label="Short List">
-      <div>one</div>
-      <div>two</div>
-      <div>three</div>
-    </List>
+    <ExampleList />
   </Example>
 ))
 
 storiesOf('List', module).add('with stack', () => (
   <Example title="with stack">
     <List label="Social">
-      <Stack>
+      <StackLayout>
         <div>github</div>
         <div>GitHub</div>
         <Switch on />
-      </Stack>
-      <Stack>
+      </StackLayout>
+      <StackLayout>
         <div>google-oauth2</div>
         <div>Google</div>
         <Switch />
-      </Stack>
+      </StackLayout>
     </List>
   </Example>
 ))
 
+storiesOf('List', module).add('stressed new', () => (
+  <Example title="mfkdfd">
+    <List>
+      <div>item</div>
+      <div>item</div>
+      <div>item</div>
+    </List>
+  </Example>
+))
 storiesOf('List', module).add('stressed', () => (
   <Example title="stressed - 739 characters per row">
     <List label="Short List">
