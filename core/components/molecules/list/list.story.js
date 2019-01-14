@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { Example } from '@auth0/cosmos/_helpers/story-helpers'
 
 import { List, Switch, StackLayout, Button } from '@auth0/cosmos'
+import ListItem from '../resource-list/item/item'
 
 class ExampleList extends React.Component {
   constructor(props) {
@@ -74,16 +75,17 @@ storiesOf('List', module).add('default', () => (
 
 storiesOf('List', module).add('with stack', () => (
   <Example title="with stack">
-    <List label="Social">
+    <List label="Social" sortable>
       <StackLayout>
         <div>github</div>
         <div>GitHub</div>
         <Switch on />
       </StackLayout>
+
       <StackLayout>
-        <div>google-oauth2</div>
-        <div>Google</div>
-        <Switch />
+        <div>github</div>
+        <div>GitHub</div>
+        <Switch on />
       </StackLayout>
     </List>
   </Example>
@@ -92,7 +94,7 @@ storiesOf('List', module).add('with stack', () => (
 storiesOf('List', module).add('stressed new', () => (
   <Example title="mfkdfd">
     <List>
-      <div>item</div>
+      <React.Fragment>item</React.Fragment>
       <div>item</div>
       <div>item</div>
     </List>

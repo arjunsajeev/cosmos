@@ -8,12 +8,15 @@ import { colors, spacing } from '@auth0/cosmos-tokens'
 import Heading, { StyledHeading } from '../../atoms/heading'
 import Icon from '../../atoms/icon'
 
-const excludeDrawer = child =>
-  React.Children.map(child.props.children, child => {
+const excludeDrawer = child => {
+  const newChildren = React.Children.map(child.props.children, child => {
     if (child.type === List.Drawer) return null
 
     return child
   })
+
+  return React.cloneElement(child, { children: newChildren })
+}
 
 const getDrawer = child => {
   let onToggle
@@ -49,7 +52,7 @@ const List = props => {
 
       {React.Children.map(props.children, child => {
         const { onToggle, drawer } = getDrawer(child)
-
+        console.log({ child })
         return (
           <List.ItemContainer {...Automation('list.item')} aria-labelledby="example-id">
             {props.sortable ? (
