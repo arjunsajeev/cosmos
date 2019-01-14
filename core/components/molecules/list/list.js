@@ -105,6 +105,7 @@ List.Content = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  word-break: break-word;
 
   > *:not(:last-child):not(:only-child) {
     margin-right: ${spacing.small};
