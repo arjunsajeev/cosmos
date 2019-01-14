@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from '@auth0/cosmos/styled'
 
 import { spacing, misc } from '@auth0/cosmos-tokens'
-import getLayoutValues from '../layout'
+// import getLayoutValues from '../layout'
 import uniqueId from '../../../_helpers/uniqueId'
 import FormContext from '../form-context'
 import Automation from '../../../_helpers/automation-attribute'
@@ -13,7 +13,6 @@ import StyledError from '../error'
 import HelpText from '../help-text'
 import TextArea from '../../../atoms/textarea'
 import Switch from '../../../atoms/switch'
-import Radio from '../../../atoms/radio'
 import { actionShapeWithRequiredIcon } from '@auth0/cosmos/_helpers/action-shape'
 import containerStyles from '../../../_helpers/container-styles'
 
@@ -26,17 +25,21 @@ const Field = props => {
     <FormContext.Consumer>
       {context => (
         <Field.Element layout={context.layout} {...Automation('form.field')}>
-          <Field.LabelLayout layout={context.layout}>
+          <Field.LabelLayout checkbox={props.checkbox} layout={context.layout}>
             <StyledLabel htmlFor={id}>{props.label}</StyledLabel>
           </Field.LabelLayout>
-          <Field.ContentLayout layout={context.layout}>
+          <Field.ContentLayout layout={context.layout} {...Automation('form.field.content')}>
             {props.fieldComponent ? (
               <props.fieldComponent id={id} hasError={error ? true : false} {...fieldProps} />
             ) : (
               props.children
             )}
-            {props.error ? <StyledError>{props.error}</StyledError> : null}
-            {props.helpText ? <HelpText>{props.helpText}</HelpText> : null}
+            {props.error || props.helpText ? (
+              <Field.FeedbackContainer>
+                {props.error ? <StyledError>{props.error}</StyledError> : null}
+                {props.helpText ? <HelpText>{props.helpText}</HelpText> : null}
+              </Field.FeedbackContainer>
+            ) : null}
           </Field.ContentLayout>
         </Field.Element>
       )}
@@ -46,39 +49,43 @@ const Field = props => {
 
 Field.Element = styled.div`
   ${containerStyles};
-  display: ${props => (props.layout === 'label-on-left' ? 'flex' : 'block')};
-  width: ${props => getLayoutValues(props.layout).formWidth};
-  margin-left: ${props => (props.layout === 'label-on-left' ? 0 : 'auto')};
-  margin-bottom: ${spacing.small};
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 4px;
+  &:not(:last-of-type):not(:only-of-type) {
+    margin-bottom: ${spacing.medium};
+  }
+
+  @media (min-width: 768px) {
+    grid-gap: ${props => (props.layout === 'label-on-left' ? '25px' : '4px')};
+    grid-template-columns: ${props => (props.layout === 'label-on-left' ? '0.35fr 1fr' : '1fr')};
+  }
 
   ${TextArea.Element} {
-    /* browsers give textareas an annoying alignment
-  that needs to be overwritten :/ */
-    vertical-align: top;
     min-height: ${misc.input.default.height};
   }
   ${Switch.Element} {
-    margin-top: 6px;
-  }
-  ${Radio.Element} {
-    margin-top: ${props => (props.layout === 'label-on-left' ? '11px' : null)};
+    /* Adds a space so the label aligns with the switch */
+    @media (min-width: 768px) {
+      margin-top: ${props => (props.layout === 'label-on-left' ? '6px' : '0')};
+    }
   }
 `
 
 Field.LabelLayout = styled.div`
-  width: ${props => getLayoutValues(props.layout).labelWidth};
-  margin: ${props => getLayoutValues(props.layout).labelMargin};
-  text-align: ${props => (props.layout === 'label-on-left' ? 'right' : 'left')};
-  padding-right: ${props => (props.layout === 'label-on-left' ? spacing.medium : 'none')};
-  padding-top: ${props => (props.layout === 'label-on-left' ? '11px' : '0')};
-  min-height: ${props => (props.layout === 'label-on-left' ? '44px' : 'none')};
-  margin-bottom: ${props => (props.layout === 'label-on-top' ? '8px' : '0')};
+  @media (min-width: 768px) {
+    text-align: ${props => (props.layout === 'label-on-left' ? 'right' : 'left')};
+    min-height: ${props => (!props.checkbox && props.layout === 'label-on-left' ? '44px' : 'none')};
+    padding-top: ${props => (!props.checkbox && props.layout === 'label-on-left' ? '11px' : '0')};
+  }
 `
-Field.ContentLayout = styled.div`
-  width: ${props => getLayoutValues(props.layout).contentWidth};
-`
+Field.ContentLayout = styled.div``
 
 Field.displayName = 'Form Field'
+
+Field.FeedbackContainer = styled.div`
+  margin-top: ${spacing.xsmall};
+`
 
 Field.propTypes = {
   /** Form Label */
@@ -88,7 +95,9 @@ Field.propTypes = {
   /** Error message to show in case of failed validation */
   error: PropTypes.string,
   /** Actions to be attached to input */
-  actions: PropTypes.arrayOf(actionShapeWithRequiredIcon)
+  actions: PropTypes.arrayOf(actionShapeWithRequiredIcon),
+  /** checkbox alignment */
+  checkbox: PropTypes.boll
 }
 
 Field.defaultProps = {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from '@auth0/cosmos/styled'
 
 import { spacing } from '@auth0/cosmos-tokens'
-import getLayoutValues from '../layout'
+// import getLayoutValues from '../layout'
 import FormContext from '../form-context'
 
 import Button from '../../../atoms/button'
@@ -50,14 +50,11 @@ const Actions = props => {
               ))}
 
             {destructiveAction && (
-              <Right>
-                <Button {...getButtonProps(destructiveAction)} appearance="destructive">
-                  {destructiveAction.label}
-                </Button>
-              </Right>
+              <Button {...getButtonProps(destructiveAction)} appearance="destructive">
+                {destructiveAction.label}
+              </Button>
             )}
           </ButtonGroup>
-          <Clear />
         </Actions.Element>
       )}
     </FormContext.Consumer>
@@ -65,12 +62,15 @@ const Actions = props => {
 }
 
 Actions.Element = styled.div`
-  width: ${props => getLayoutValues(props.layout).formWidth};
-  padding-left: ${props =>
-    props.layout === 'label-on-left' ? getLayoutValues(props.layout).labelWidth : 0};
-  margin-left: ${props => (props.layout === 'label-on-left' ? 0 : 'auto')};
+  display: grid;
   margin-top: ${spacing.medium};
-  margin-bottom: ${spacing.small};
+  grid-gap: ${props => (props.layout === 'label-on-left' ? '25px' : '0')};
+  @media (min-width: 768px) {
+    grid-template-columns: ${props => (props.layout === 'label-on-left' ? '0.35fr 1fr' : '1fr')};
+    ${ButtonGroup.Element} {
+      grid-column-start: ${props => (props.layout === 'label-on-left' ? '2' : '1')};
+    }
+  }
 `
 
 Actions.displayName = 'Form Actions'
