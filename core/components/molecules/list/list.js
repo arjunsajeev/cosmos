@@ -43,7 +43,12 @@ const isListExpandable = child => {
 
 const List = props => {
   return (
-    <List.Element {...Automation('list')} role="list" aria-label="Expandable data list example">
+    <List.Element
+      {...props}
+      {...Automation('list')}
+      role="list"
+      aria-label="Expandable data list example"
+    >
       {props.label ? (
         <List.Label>
           <Heading size={4}>{props.label}</Heading>
