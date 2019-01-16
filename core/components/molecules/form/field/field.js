@@ -51,13 +51,13 @@ Field.Element = styled.div`
   ${containerStyles};
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 4px;
+  grid-gap: ${spacing.xxsmall};
   &:not(:last-of-type):not(:only-of-type) {
     margin-bottom: ${spacing.medium};
   }
 
   @media (min-width: 768px) {
-    grid-gap: ${props => (props.layout === 'label-on-left' ? '25px' : '4px')};
+    grid-gap: ${props => (props.layout === 'label-on-left' ? spacing.medium : spacing.xxsmall)};
     grid-template-columns: ${props => (props.layout === 'label-on-left' ? '0.35fr 1fr' : '1fr')};
   }
 
