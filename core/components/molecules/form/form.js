@@ -8,6 +8,7 @@ import TextArea from '../../atoms/textarea'
 import Select from '../../atoms/select'
 import Switch from '../../atoms/switch'
 import Radio from '../../atoms/radio'
+import { spacing } from '@auth0/cosmos-tokens'
 
 import Field from './field'
 import Actions from './actions'
@@ -23,6 +24,11 @@ const Form = props => (
 
 Form.Element = styled.form`
   max-width: 625px;
+
+  /* This margin goes here since the field element needs to be wrap by a fieldset sometimes due to a  browser bug https://github.com/w3c/csswg-drafts/issues/321 */
+  > *:not(:last-child):not(:only-child) {
+    margin-bottom: ${spacing.medium};
+  }
 `
 
 Form.Field = props => <Field {...props} />

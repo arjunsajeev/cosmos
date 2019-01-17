@@ -19,30 +19,32 @@ const Field = props => {
   /* Get unique id for label */
   let id = props.id || uniqueId(props.label)
   const { error, ...fieldProps } = props
-  const Element = props.checkbox ? Field.FieldSetElement : Field.Element
   const Label = props.checkbox ? Field.CheckboxLabel : StyledLabel
+  const FieldSetWrapper = props.checkbox ? Field.FieldSetElement : React.Fragment
 
   return (
     <FormContext.Consumer>
       {context => (
-        <Element layout={context.layout} {...Automation('form.field')}>
-          <Field.LabelLayout checkbox={props.checkbox} layout={context.layout}>
-            <Label htmlFor={id}>{props.label}</Label>
-          </Field.LabelLayout>
-          <Field.ContentLayout layout={context.layout} {...Automation('form.field.content')}>
-            {props.fieldComponent ? (
-              <props.fieldComponent id={id} hasError={error ? true : false} {...fieldProps} />
-            ) : (
-              props.children
-            )}
-            {(props.error || props.helpText) && (
-              <Field.FeedbackContainer>
-                {props.error && <StyledError>{props.error}</StyledError>}
-                {props.helpText && <HelpText>{props.helpText}</HelpText>}
-              </Field.FeedbackContainer>
-            )}
-          </Field.ContentLayout>
-        </Element>
+        <FieldSetWrapper>
+          <Field.Element layout={context.layout} {...Automation('form.field')}>
+            <Field.LabelLayout checkbox={props.checkbox} layout={context.layout}>
+              <Label htmlFor={id}>{props.label}</Label>
+            </Field.LabelLayout>
+            <Field.ContentLayout layout={context.layout} {...Automation('form.field.content')}>
+              {props.fieldComponent ? (
+                <props.fieldComponent id={id} hasError={error ? true : false} {...fieldProps} />
+              ) : (
+                props.children
+              )}
+              {(props.error || props.helpText) && (
+                <Field.FeedbackContainer>
+                  {props.error && <StyledError>{props.error}</StyledError>}
+                  {props.helpText && <HelpText>{props.helpText}</HelpText>}
+                </Field.FeedbackContainer>
+              )}
+            </Field.ContentLayout>
+          </Field.Element>
+        </FieldSetWrapper>
       )}
     </FormContext.Consumer>
   )
@@ -53,11 +55,6 @@ Field.Element = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: ${spacing.xxsmall};
-
-  &:not(:last-of-type):not(:only-of-type) {
-    margin-bottom: ${spacing.medium};
-  }
-
   @media (min-width: 768px) {
     grid-gap: ${props => (props.layout === 'label-on-left' ? spacing.medium : spacing.xxsmall)};
     grid-template-columns: ${props => (props.layout === 'label-on-left' ? '0.35fr 1fr' : '1fr')};
@@ -74,7 +71,7 @@ Field.Element = styled.div`
   }
 `
 
-Field.FieldSetElement = Field.Element.withComponent('fieldset')
+Field.FieldSetElement = styled.fieldset``
 Field.CheckboxLabel = StyledLabel.withComponent('legend')
 
 Field.LabelLayout = styled.div`
