@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from '@auth0/cosmos/styled'
 
 import { spacing } from '@auth0/cosmos-tokens'
-// import getLayoutValues from '../layout'
 import FormContext from '../form-context'
 
 import Button from '../../../atoms/button'

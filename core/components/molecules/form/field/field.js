@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from '@auth0/cosmos/styled'
 
 import { spacing, misc } from '@auth0/cosmos-tokens'
-// import getLayoutValues from '../layout'
 import uniqueId from '../../../_helpers/uniqueId'
 import FormContext from '../form-context'
 import Automation from '../../../_helpers/automation-attribute'
@@ -20,13 +19,15 @@ const Field = props => {
   /* Get unique id for label */
   let id = props.id || uniqueId(props.label)
   const { error, ...fieldProps } = props
+  const Element = props.checkbox ? Field.FieldSetElement : Field.Element
+  const Label = props.checkbox ? Field.CheckboxLabel : StyledLabel
 
   return (
     <FormContext.Consumer>
       {context => (
-        <Field.Element layout={context.layout} {...Automation('form.field')}>
+        <Element layout={context.layout} {...Automation('form.field')}>
           <Field.LabelLayout checkbox={props.checkbox} layout={context.layout}>
-            <StyledLabel htmlFor={id}>{props.label}</StyledLabel>
+            <Label htmlFor={id}>{props.label}</Label>
           </Field.LabelLayout>
           <Field.ContentLayout layout={context.layout} {...Automation('form.field.content')}>
             {props.fieldComponent ? (
@@ -34,14 +35,14 @@ const Field = props => {
             ) : (
               props.children
             )}
-            {props.error || props.helpText ? (
+            {(props.error || props.helpText) && (
               <Field.FeedbackContainer>
-                {props.error ? <StyledError>{props.error}</StyledError> : null}
-                {props.helpText ? <HelpText>{props.helpText}</HelpText> : null}
+                {props.error && <StyledError>{props.error}</StyledError>}
+                {props.helpText && <HelpText>{props.helpText}</HelpText>}
               </Field.FeedbackContainer>
-            ) : null}
+            )}
           </Field.ContentLayout>
-        </Field.Element>
+        </Element>
       )}
     </FormContext.Consumer>
   )
@@ -52,6 +53,7 @@ Field.Element = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: ${spacing.xxsmall};
+
   &:not(:last-of-type):not(:only-of-type) {
     margin-bottom: ${spacing.medium};
   }
@@ -72,11 +74,12 @@ Field.Element = styled.div`
   }
 `
 
+Field.FieldSetElement = Field.Element.withComponent('fieldset')
+Field.CheckboxLabel = StyledLabel.withComponent('legend')
+
 Field.LabelLayout = styled.div`
   @media (min-width: 768px) {
     text-align: ${props => (props.layout === 'label-on-left' ? 'right' : 'left')};
-    /* min-height: ${props =>
-      !props.checkbox && props.layout === 'label-on-left' ? '44px' : 'none'}; */
     padding-top: ${props =>
       !props.checkbox && props.layout === 'label-on-left' ? misc.inputs.padding : '0'};
   }
@@ -99,7 +102,7 @@ Field.propTypes = {
   /** Actions to be attached to input */
   actions: PropTypes.arrayOf(actionShapeWithRequiredIcon),
   /** checkbox alignment */
-  checkbox: PropTypes.boll
+  checkbox: PropTypes.bool
 }
 
 Field.defaultProps = {
