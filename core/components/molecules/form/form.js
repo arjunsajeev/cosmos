@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from '@auth0/cosmos/styled'
 import Automation from '../../_helpers/automation-attribute'
 
 import TextInput from '../../atoms/text-input'
@@ -16,9 +17,13 @@ import FormContext from './form-context'
 
 const Form = props => (
   <FormContext.Provider value={{ layout: props.layout }}>
-    <form {...props} {...Automation('form')} />
+    <Form.Element {...props} {...Automation('form')} />
   </FormContext.Provider>
 )
+
+Form.Element = styled.form`
+  max-width: 625px;
+`
 
 Form.Field = props => <Field {...props} />
 Form.TextInput = props => <Field {...props} fieldComponent={TextInput} />

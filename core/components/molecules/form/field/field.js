@@ -75,8 +75,10 @@ Field.Element = styled.div`
 Field.LabelLayout = styled.div`
   @media (min-width: 768px) {
     text-align: ${props => (props.layout === 'label-on-left' ? 'right' : 'left')};
-    min-height: ${props => (!props.checkbox && props.layout === 'label-on-left' ? '44px' : 'none')};
-    padding-top: ${props => (!props.checkbox && props.layout === 'label-on-left' ? '11px' : '0')};
+    /* min-height: ${props =>
+      !props.checkbox && props.layout === 'label-on-left' ? '44px' : 'none'}; */
+    padding-top: ${props =>
+      !props.checkbox && props.layout === 'label-on-left' ? misc.inputs.padding : '0'};
   }
 `
 Field.ContentLayout = styled.div``
